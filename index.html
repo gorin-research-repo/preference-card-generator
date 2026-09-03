@@ -162,7 +162,7 @@ button.iconx:hover{border-color:#c45;color:#c45}
 .pref-brand img{height:64px;width:auto}
 .pref-title{margin:8px 0 16px;text-align:center;color:var(--green);font-size:20px;font-weight:700;padding-left:1ch}
 .head-fields{margin:0 0 20px;color:#111;max-width:70%}
-.head-row{display:flex;gap:0;align-items:baseline;margin:0 0 8px;color:#111}
+.head-row{display:flex;gap:1ch;align-items:baseline;margin:0 0 8px;color:#111}
 .head-row .k{flex:none;font-weight:700;font-size:14px;line-height:1.25}
 .head-row .v{
   flex:1;min-width:0;font-size:14px;font-weight:400;line-height:1.25;color:#111;padding:0
@@ -735,9 +735,9 @@ function updatePreview(){
         <h2 class="pref-title">Surgeon Preference Card</h2>
 
         <div class="head-fields">
-          <div class="head-row"><span class="k">Surgeon: </span><span class="v">${m.surgeon ? escapeHtml(m.surgeon) : ""}</span></div>
-          <div class="head-row"><span class="k">Procedure (CPT Code): </span><span class="v">${escapeHtml(procCpt)}</span></div>
-          <div class="head-row"><span class="k">Version Date: </span><span class="v">${escapeHtml(dateLabel)}</span></div>
+          <div class="head-row"><span class="k">Surgeon:</span><span class="v">${m.surgeon ? escapeHtml(m.surgeon) : ""}</span></div>
+          <div class="head-row"><span class="k">Procedure (CPT Code):</span><span class="v">${escapeHtml(procCpt)}</span></div>
+          <div class="head-row"><span class="k">Version Date:</span><span class="v">${escapeHtml(dateLabel)}</span></div>
         </div>
 
         ${sectionsHtml}
