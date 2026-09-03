@@ -1,0 +1,938 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Surgery Preference Cards — PeakPoint Central Nassau Surgery Center</title>
+<style>
+:root{
+  --green:#268b6b;
+  --green-d:#1c6b52;
+  --slate:#495566;
+  --slate-l:#5a6678;
+  --ink:#1f2733;
+  --muted:#6b7684;
+  --line:#e2e7ee;
+  --bg:#f4f6f9;
+  --card:#ffffff;
+  --amber:#b7791f;
+  --amber-bg:#fdf6e7;
+  --pp-stroke:#8C8C8C;
+  --pp-header:#E8E8E8;
+  --font:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:var(--font);
+  color:var(--ink);
+  background:var(--bg);
+  line-height:1.5;
+  -webkit-font-smoothing:antialiased;
+}
+a{color:var(--green-d);text-decoration:none;border-bottom:1px solid rgba(38,139,107,.4)}
+a:hover{border-bottom-color:var(--green-d)}
+button,input,select,textarea{font:inherit}
+.wrap{max-width:900px;margin:0 auto;padding:0 20px 80px}
+header{background:var(--card);border-bottom:1px solid var(--line)}
+.head-inner{max-width:900px;margin:0 auto;padding:22px 20px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.logo img{height:60px;width:auto;display:block}
+@media(max-width:560px){.logo img{height:42px}}
+.head-meta{font-size:12px;color:var(--muted);text-align:right}
+.head-meta strong{display:block;color:var(--slate);font-size:13px}
+h1{font-size:22px;margin:26px 0 4px;font-weight:700}
+.sub{color:var(--muted);font-size:14px;margin:0 0 22px}
+.step{
+  background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px;
+  margin-bottom:18px;box-shadow:0 1px 2px rgba(20,30,50,.03)
+}
+.step-h{display:flex;align-items:center;gap:11px;margin-bottom:16px}
+.num{
+  flex:none;width:26px;height:26px;border-radius:50%;background:var(--green);color:#fff;
+  font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center
+}
+.step-h h2{font-size:15px;margin:0;font-weight:700}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:620px){
+  .grid-2{grid-template-columns:1fr}
+}
+label.fld{display:block;font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:7px}
+input[type=text],input[type=number],input[type=date],select,textarea{
+  width:100%;padding:12px 14px;font-size:15px;border:1px solid #cdd5e0;border-radius:9px;
+  background:#fff;color:var(--ink)
+}
+textarea{min-height:84px;resize:vertical}
+input:focus,select:focus,textarea:focus{
+  outline:none;border-color:var(--green);box-shadow:0 0 0 3px rgba(38,139,107,.18)
+}
+.hint{font-size:12.5px;color:var(--muted);margin-top:9px}
+.section-block{border:1px solid var(--line);border-radius:12px;overflow:hidden;margin-bottom:14px;background:#fff}
+.section-block .sh{
+  background:var(--green);color:#fff;padding:11px 16px;font-weight:700;font-size:14px;
+  display:flex;justify-content:space-between;align-items:center;gap:10px
+}
+.section-block .sh span{font-weight:600;font-size:12px;opacity:.9}
+.section-body{padding:14px 16px}
+.add-row{display:grid;grid-template-columns:1fr 88px auto auto;gap:8px;align-items:end;margin-bottom:12px}
+@media(max-width:620px){.add-row{grid-template-columns:1fr 1fr}}
+.item-list{display:flex;flex-direction:column;gap:8px}
+.item{
+  display:grid;grid-template-columns:36px 1fr 72px 150px 36px;gap:8px;align-items:center;
+  border:1px solid #d7dee8;border-radius:10px;padding:10px 12px;background:#fafbfc
+}
+.item.simple{grid-template-columns:36px 1fr 36px}
+.iorder{display:flex;flex-direction:column;gap:2px}
+button.imove{
+  width:32px;height:16px;border:1px solid #cdd5e0;border-radius:5px;background:#fff;
+  color:var(--slate);cursor:pointer;font-size:9px;line-height:1;padding:0
+}
+button.imove:hover:enabled{border-color:var(--green);color:var(--green-d)}
+button.imove:disabled{opacity:.28;cursor:default}
+@media(max-width:620px){
+  .item{grid-template-columns:36px 1fr 64px;grid-template-areas:"ord name name" "ord qty status" "ord . remove"}
+  .item.simple{grid-template-columns:36px 1fr 36px;grid-template-areas:"ord name remove"}
+  .item .iorder{grid-area:ord}
+  .item .iname{grid-area:name}
+  .item .iqty{grid-area:qty}
+  .item .istatus{grid-area:status}
+  .item .iremove{grid-area:remove;justify-self:end}
+}
+.item .iname{font-weight:600;font-size:14px}
+.item input[type=number]{padding:8px 10px}
+.opts{display:flex;gap:6px}
+.opt{flex:1;position:relative}
+.opt input{position:absolute;opacity:0;inset:0;cursor:pointer;margin:0}
+.opt span{
+  display:block;text-align:center;padding:8px 6px;border:1px solid #cdd5e0;border-radius:8px;
+  font-size:12px;font-weight:600;color:var(--slate-l);cursor:pointer;background:#fff;transition:.12s
+}
+.opt input:checked+span{border-color:var(--green);background:var(--green);color:#fff}
+.opt.standby input:checked+span{border-color:var(--slate);background:var(--slate);color:#fff}
+button.go{
+  background:var(--green);color:#fff;border:none;border-radius:9px;padding:13px 26px;
+  font-size:15px;font-weight:700;cursor:pointer
+}
+button.go:hover{background:var(--green-d)}
+button.go:disabled{opacity:.45;cursor:default}
+button.ghost{
+  background:#fff;color:var(--slate);border:1px solid #cdd5e0;border-radius:9px;
+  padding:13px 20px;font-size:14px;font-weight:600;cursor:pointer
+}
+button.ghost:hover{border-color:var(--slate-l)}
+button.mini{
+  background:var(--green);color:#fff;border:none;border-radius:8px;padding:11px 14px;
+  font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap
+}
+button.mini:hover{background:var(--green-d)}
+button.iconx{
+  width:32px;height:32px;border:1px solid #cdd5e0;border-radius:8px;background:#fff;
+  color:var(--muted);cursor:pointer;font-size:16px;line-height:1
+}
+button.iconx:hover{border-color:#c45;color:#c45}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:4px}
+.library{
+  background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin:0 0 18px
+}
+.library-h{font-size:13px;font-weight:700;margin:0 0 10px}
+.library-item{
+  display:flex;align-items:center;justify-content:space-between;gap:10px;
+  border:1px solid var(--line);border-radius:9px;padding:10px 12px;margin:0 0 8px;background:#fff
+}
+.library-item:last-child{margin-bottom:0}
+.library-item .lab{font-size:14px;font-weight:600}
+.library-item .when{font-size:12px;color:var(--muted);margin-top:2px}
+.library-actions{display:flex;gap:6px;flex:none}
+.status-msg{font-size:13px;color:var(--green-d);margin:0 0 12px}
+.summary{background:var(--slate);color:#fff;border-radius:13px;padding:18px 20px;margin:8px 0 16px}
+.summary .s1{font-size:12px;letter-spacing:.06em;text-transform:uppercase;opacity:.75}
+.summary .s2{font-size:18px;font-weight:700;margin-top:2px}
+.summary .pills{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.pill{background:rgba(255,255,255,.14);border-radius:20px;padding:5px 13px;font-size:12.5px;font-weight:600}
+.empty-sec{color:var(--muted);font-size:13px;padding:8px 2px}
+.preview-shell{margin-top:8px}
+.preview-label{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin:0 0 10px}
+
+/* Printable preference card document */
+.pref-doc{
+  background:#fff;border:1px solid var(--line);border-radius:12px;overflow:hidden;color:#111;
+  font-family:Helvetica,Arial,sans-serif;font-size:12px;line-height:1.35
+}
+.pref-page{padding:28px 32px}
+.pref-brand{display:flex;flex-direction:column;align-items:center;margin:0 0 8px}
+.pref-brand img{height:64px;width:auto}
+.pref-title{margin:8px 0 16px;text-align:center;color:var(--green);font-size:20px;font-weight:700;padding-left:1ch}
+.head-fields{margin:0 0 20px;color:#111;max-width:70%}
+.head-row{display:flex;gap:0;align-items:baseline;margin:0 0 8px;color:#111}
+.head-row .k{flex:none;font-weight:700;font-size:14px;line-height:1.25}
+.head-row .v{
+  flex:1;min-width:0;font-size:14px;font-weight:400;line-height:1.25;color:#111;padding:0
+}
+.pref-sec{border:1.5px solid #111;margin:0 0 14px;overflow:hidden}
+.pref-sec-h{
+  background:var(--green);color:#fff;font-weight:700;font-size:13px;padding:8px 12px;
+  font-family:Helvetica,Arial,sans-serif;-webkit-print-color-adjust:exact;print-color-adjust:exact
+}
+.pref-table{width:100%;border-collapse:collapse}
+.pref-table th,.pref-table td{border-top:1px solid var(--pp-stroke);padding:7px 10px;font-size:11px;text-align:left}
+.pref-table th{background:var(--pp-header);font-size:10px;text-transform:uppercase;letter-spacing:.04em}
+.pref-table .qty,.pref-table .stat{width:90px;text-align:center}
+.pref-table .stat-open{color:var(--green);font-weight:700}
+.pref-table .stat-standby{color:var(--slate);font-weight:700}
+.pref-empty{padding:10px 12px;color:#666;font-style:italic}
+.notes-box{border:1.5px solid #111;padding:10px 12px;margin-top:4px}
+.notes-box strong{display:block;margin-bottom:6px;font-size:11px}
+
+@media(max-width:620px){
+  .pref-page{padding:18px 14px}
+}
+
+@page{
+  size:letter;
+  margin:14mm 12mm 18mm 12mm;
+  @bottom-center{
+    content:counter(page);
+    font-family:Helvetica,Arial,sans-serif;
+    font-size:10px;
+    color:#111;
+  }
+}
+@media print{
+  body{background:#fff}
+  header,.no-print{display:none !important}
+  .wrap{max-width:none;margin:0;padding:0}
+  .pref-doc{border:0;border-radius:0}
+  .pref-sec,.head-fields,.notes-box{break-inside:avoid}
+  .pref-page{padding:0}
+  .pref-sec-h{font-weight:700 !important}
+  a{border:0}
+}
+</style>
+</head>
+<body>
+<header class="no-print">
+  <div class="head-inner">
+    <div class="logo">
+      <img src="Logo.jpg" alt="PeakPoint Central Nassau Surgery Center">
+    </div>
+    <div class="head-meta">
+      <strong>PeakPoint Central Nassau</strong>
+      Surgery preference cards
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+  <h1 class="no-print">Surgery Preference Card Generator</h1>
+  <p class="sub no-print">Build a procedure preference card with trays, special equipment, drape, prep, fluids, catheters, and disposables. Choose quantity and Open vs Standby for each item, then print or save as PDF.</p>
+
+  <div class="step no-print" id="step1">
+    <div class="step-h"><div class="num">1</div><h2>Case &amp; surgeon</h2></div>
+    <div class="grid-2">
+      <div>
+        <label class="fld" for="surgeon">Surgeon name</label>
+        <input id="surgeon" type="text" placeholder="e.g., Michael Gorin, MD" autocomplete="name">
+      </div>
+      <div>
+        <label class="fld" for="facility">Facility</label>
+        <input id="facility" type="text" value="PeakPoint Central Nassau Surgery Center">
+      </div>
+      <div>
+        <label class="fld" for="procedure">Procedure name</label>
+        <input id="procedure" type="text" placeholder="e.g., Ureteroscopy with laser lithotripsy">
+      </div>
+      <div>
+        <label class="fld" for="cpt">CPT code(s)</label>
+        <input id="cpt" type="text" placeholder="e.g., 52356">
+      </div>
+      <div>
+        <label class="fld" for="cardDate">Card date</label>
+        <input id="cardDate" type="date">
+      </div>
+    </div>
+    <div style="margin-top:14px">
+      <label class="fld" for="notes">Notes / preferences</label>
+      <textarea id="notes" placeholder="Suture preferences, implants, latex allergy, special requests…"></textarea>
+    </div>
+  </div>
+
+  <div class="step no-print" id="step2">
+    <div class="step-h"><div class="num">2</div><h2>Preference card items</h2></div>
+    <p class="hint" style="margin-top:-6px;margin-bottom:14px">Add catalog items or type a custom name. Set quantity and choose <strong>Open</strong> (open on the field) or <strong>Standby</strong> (available but not opened). Add the same item twice if you need some open and some on standby. Use the arrows to change order within a section.</p>
+    <div id="sections"></div>
+  </div>
+
+  <div class="actions no-print" style="margin-bottom:18px">
+    <button class="go" id="printBtn" type="button">Print / Save PDF</button>
+    <button class="ghost" id="saveBtn" type="button">Save card</button>
+    <button class="ghost" id="loadBtn" type="button">Load saved…</button>
+    <button class="ghost" id="clearBtn" type="button">Clear card</button>
+  </div>
+  <p class="status-msg no-print" id="saveStatus" hidden></p>
+  <div class="library no-print" id="library" hidden>
+    <div class="library-h">Saved cards</div>
+    <div id="libraryList"></div>
+  </div>
+
+  <div class="summary no-print" id="summaryBar">
+    <div class="s1">Live card summary</div>
+    <div class="s2" id="summaryTitle">Add surgeon and procedure details</div>
+    <div class="pills" id="summaryPills"></div>
+  </div>
+
+  <div class="preview-shell">
+    <p class="preview-label no-print">Printable preference card</p>
+    <div id="preview"></div>
+  </div>
+
+</div>
+
+<script>
+const STORAGE_KEY = "pp-pref-cards-v1";
+const DRAFT_KEY = "pp-pref-card-draft-v1";
+
+const SECTIONS = [
+  { id: "position", label: "Patient position" },
+  { id: "trays", label: "Instruments / Trays" },
+  { id: "equipment", label: "Special equipment" },
+  { id: "drape", label: "Drape" },
+  { id: "prep", label: "Prep" },
+  { id: "fluids", label: "Fluids" },
+  { id: "catheters", label: "Catheters" },
+  { id: "disposables", label: "Disposables" }
+];
+
+const CATALOG = {
+  position: [
+    "Lithotomy",
+    "High lithotomy",
+    "Low lithotomy",
+    "Supine",
+    "Frog-leg",
+    "Left lateral",
+    "Right lateral",
+    "Prone",
+    "Trendelenburg",
+    "Reverse Trendelenburg"
+  ],
+  trays: [
+    "Rigid cystoscope",
+    "TUR tray",
+    "DVIU tray",
+    "Rigid ureteroscope",
+    "HoLEP tray",
+    "Morcellator tray",
+    "Minor procedure tray",
+    "Pelvic procedure tray",
+    "12 degree lens",
+    "30 degree lens",
+    "70 degree lens"
+  ],
+  equipment: [
+    "Fluoroscopy",
+    "Wolf morcellator",
+    "Holmium laser",
+    "Laser safety eyewear",
+    "Video tower / camera system",
+    "Irrigation / fluid management pump",
+    "Ellik evacuator",
+    "Bipolar generator",
+    "Monopolar generator",
+    "Bugbee electrode",
+    "Yellowfin stirrups"
+  ],
+  drape: [
+    "Cystoscopy / TUR drape",
+    "Under-buttocks drape",
+    "Back table cover",
+    "Mayo stand cover",
+    "Towel pack"
+  ],
+  prep: [
+    "Chlorhexidine 2% applicator (ChloraPrep)",
+    "Chlorhexidine solution",
+    "Povidone-iodine scrub / paint",
+    "Perineal / genital prep kit",
+    "Hair clippers",
+    "Surgical skin marker"
+  ],
+  fluids: [
+    "Sterile water, 3 L bag — hung",
+    "Sterile water, 3 L bag — in basin",
+    "Sterile water, 1 L bag — hung",
+    "Sterile water, 1 L bag — in basin",
+    "Sterile water, bottle — hung",
+    "Sterile water, bottle — in basin",
+    "Saline, 3 L bag — hung",
+    "Saline, 3 L bag — in basin",
+    "Saline, 1 L bag — hung",
+    "Saline, 1 L bag — in basin",
+    "Saline, bottle — hung",
+    "Saline, bottle — in basin"
+  ],
+  catheters: [
+    "14 Fr two-way Foley",
+    "14 Fr two-way Coudé-tip Foley",
+    "14 Fr three-way Foley",
+    "16 Fr two-way Foley",
+    "16 Fr two-way Coudé-tip Foley",
+    "16 Fr three-way Foley",
+    "20 Fr two-way Foley",
+    "20 Fr two-way Coudé-tip Foley",
+    "20 Fr three-way Foley",
+    "22 Fr two-way Foley",
+    "22 Fr two-way Coudé-tip Foley",
+    "22 Fr three-way Foley",
+    "24 Fr two-way Foley",
+    "24 Fr two-way Coudé-tip Foley",
+    "24 Fr three-way Foley"
+  ],
+  disposables: [
+    "5 French open-ended catheter",
+    "Check-Flo adaptor",
+    "Straight Motion Hybrid wire",
+    "Amplatz Super Stiff wire",
+    "Optical fiber 200 μm",
+    "Optical fiber 365 μm",
+    "Optical fiber 550 μm",
+    "Optical fiber 1000 μm",
+    "6 French × 24 cm soft double-J stent",
+    "6 French × 26 cm soft double-J stent",
+    "6 French × 28 cm soft double-J stent",
+    "8 French × 26 cm stiff double-J stent",
+    "8 French × 28 cm stiff double-J stent",
+    "Ascend single-use flexible ureteroscope 7.5 Fr standard",
+    "Flexible cystoscope, single-use",
+    "Ureteroscopy irrigation tubing for hand pumping",
+    "Cystoscopy tubing",
+    "Toomey syringe",
+    "Lubricant",
+    "Raytec sponges",
+    "Wolf resection loop",
+    "Wolf ablation button",
+    "Bovie cautery",
+    "Foley drainage bag",
+    "Catheter leg strap",
+    "S-Curve urethral dilator set",
+    "BiWire",
+    "Dual-lumen access catheter",
+    "Flexor ureteral access sheath 10.7 × 28",
+    "Flexor ureteral access sheath 10.7 × 35",
+    "Flexor ureteral access sheath 10.7 × 45",
+    "Stone extraction basket",
+    "One-Step SP tube introducer 16 French",
+    "AQ Long Taper ureteral dilator",
+    "Penrose drain",
+    "Ureteral dilation balloon with hand pump 7 French × 10 cm",
+    "Mac-Loc pigtail tube insertion set 14 French"
+  ]
+};
+
+Object.keys(CATALOG).forEach(key => {
+  CATALOG[key] = CATALOG[key].slice().sort((a, b) =>
+    a.localeCompare(b, undefined, { numeric: true, sensitivity: "base" })
+  );
+});
+
+const state = {
+  items: {
+    trays: [],
+    equipment: [],
+    drape: [],
+    prep: [],
+    fluids: [],
+    catheters: [],
+    disposables: [],
+    position: []
+  }
+};
+
+function $(id){ return document.getElementById(id); }
+function uid(){ return "i" + Math.random().toString(36).slice(2, 9); }
+function escapeHtml(s){
+  return String(s ?? "").replace(/[&<>"']/g, c => ({
+    "&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"
+  }[c]));
+}
+function todayISO(){
+  const d = new Date();
+  const m = String(d.getMonth()+1).padStart(2,"0");
+  const day = String(d.getDate()).padStart(2,"0");
+  return `${d.getFullYear()}-${m}-${day}`;
+}
+
+function renderSections(){
+  const host = $("sections");
+  host.innerHTML = SECTIONS.map(sec => {
+    const listId = `list-${sec.id}`;
+    const opts = (CATALOG[sec.id] || []).map(n => `<option value="${escapeHtml(n)}"></option>`).join("");
+    const isPosition = sec.id === "position";
+    const qtyField = isPosition ? "" : `
+            <div>
+              <label class="fld" for="qty-${sec.id}">Qty</label>
+              <input id="qty-${sec.id}" type="number" min="1" step="1" value="1">
+            </div>`;
+    return `
+      <div class="section-block" data-section="${sec.id}">
+        <div class="sh">${escapeHtml(sec.label)} <span>${(state.items[sec.id]||[]).length} item(s)</span></div>
+        <div class="section-body">
+          <div class="add-row">
+            <div>
+              <label class="fld" for="name-${sec.id}">${isPosition ? "Position" : "Item"}</label>
+              <input id="name-${sec.id}" type="text" list="cat-${sec.id}" placeholder="${isPosition ? "Select or type a position" : "Select or type custom item"}">
+              <datalist id="cat-${sec.id}">${opts}</datalist>
+            </div>
+            ${qtyField}
+            <div>
+              <label class="fld">&nbsp;</label>
+              <button class="mini" type="button" data-add="${sec.id}">${isPosition ? "Add position" : "Add item"}</button>
+            </div>
+            <div></div>
+          </div>
+          <div class="item-list" id="${listId}"></div>
+        </div>
+      </div>`;
+  }).join("");
+
+  host.querySelectorAll("[data-add]").forEach(btn => {
+    btn.addEventListener("click", () => addItem(btn.getAttribute("data-add")));
+  });
+  SECTIONS.forEach(sec => {
+    const input = $(`name-${sec.id}`);
+    if (input) {
+      input.addEventListener("keydown", e => {
+        if (e.key === "Enter") {
+          e.preventDefault();
+          addItem(sec.id);
+        }
+      });
+    }
+    renderItemList(sec.id);
+  });
+}
+
+function addItem(sectionId){
+  const nameEl = $(`name-${sectionId}`);
+  const qtyEl = $(`qty-${sectionId}`);
+  const name = (nameEl.value || "").trim();
+  const qty = qtyEl ? Math.max(1, parseInt(qtyEl.value, 10) || 1) : 1;
+  if (!name) {
+    nameEl.focus();
+    return;
+  }
+  if (!state.items[sectionId]) state.items[sectionId] = [];
+  const duplicateOk = sectionId !== "position";
+  const existing = duplicateOk ? null : state.items[sectionId].find(i => i.name.toLowerCase() === name.toLowerCase());
+  if (existing) {
+    existing.qty = qty;
+  } else {
+    state.items[sectionId].push({
+      id: uid(),
+      name,
+      qty,
+      status: "open"
+    });
+  }
+  nameEl.value = "";
+  if (qtyEl) qtyEl.value = "1";
+  nameEl.focus();
+  renderItemList(sectionId);
+  updatePreview();
+  persistDraft();
+}
+
+function removeItem(sectionId, itemId){
+  state.items[sectionId] = state.items[sectionId].filter(i => i.id !== itemId);
+  renderItemList(sectionId);
+  updatePreview();
+  persistDraft();
+}
+
+function moveItem(sectionId, itemId, delta){
+  const list = state.items[sectionId] || [];
+  const i = list.findIndex(x => x.id === itemId);
+  const j = i + delta;
+  if (i < 0 || j < 0 || j >= list.length) return;
+  const [row] = list.splice(i, 1);
+  list.splice(j, 0, row);
+  renderItemList(sectionId);
+  updatePreview();
+  persistDraft();
+}
+
+function orderControls(item, index, total){
+  return `<div class="iorder">
+      <button type="button" class="imove up" ${index === 0 ? "disabled" : ""} aria-label="Move ${escapeHtml(item.name)} up">▲</button>
+      <button type="button" class="imove down" ${index === total - 1 ? "disabled" : ""} aria-label="Move ${escapeHtml(item.name)} down">▼</button>
+    </div>`;
+}
+
+function wireOrderButtons(host, sectionId){
+  host.querySelectorAll(".item").forEach(row => {
+    const id = row.getAttribute("data-id");
+    const up = row.querySelector(".imove.up");
+    const down = row.querySelector(".imove.down");
+    if (up) up.addEventListener("click", () => moveItem(sectionId, id, -1));
+    if (down) down.addEventListener("click", () => moveItem(sectionId, id, 1));
+  });
+}
+
+function renderItemList(sectionId){
+  const host = $(`list-${sectionId}`);
+  if (!host) return;
+  const items = state.items[sectionId] || [];
+  const block = host.closest(".section-block");
+  if (block) {
+    const badge = block.querySelector(".sh span");
+    if (badge) badge.textContent = `${items.length} item(s)`;
+  }
+  if (!items.length) {
+    host.innerHTML = `<div class="empty-sec">No items yet — add from the catalog or type a custom name.</div>`;
+    return;
+  }
+  if (sectionId === "position") {
+    host.innerHTML = items.map((item, index) => `
+    <div class="item simple" data-id="${item.id}">
+      ${orderControls(item, index, items.length)}
+      <div class="iname">${escapeHtml(item.name)}</div>
+      <button class="iconx iremove" type="button" title="Remove" aria-label="Remove ${escapeHtml(item.name)}">×</button>
+    </div>
+  `).join("");
+    host.querySelectorAll(".item").forEach(row => {
+      const id = row.getAttribute("data-id");
+      row.querySelector(".iremove").addEventListener("click", () => removeItem(sectionId, id));
+    });
+    wireOrderButtons(host, sectionId);
+    return;
+  }
+  host.innerHTML = items.map((item, index) => `
+    <div class="item" data-id="${item.id}">
+      ${orderControls(item, index, items.length)}
+      <div class="iname">${escapeHtml(item.name)}</div>
+      <input class="iqty" type="number" min="1" step="1" value="${item.qty}" aria-label="Quantity for ${escapeHtml(item.name)}">
+      <div class="istatus opts">
+        <label class="opt"><input type="radio" name="st-${item.id}" value="open" ${item.status==="open"?"checked":""}><span>Open</span></label>
+        <label class="opt standby"><input type="radio" name="st-${item.id}" value="standby" ${item.status==="standby"?"checked":""}><span>Standby</span></label>
+      </div>
+      <button class="iconx iremove" type="button" title="Remove" aria-label="Remove ${escapeHtml(item.name)}">×</button>
+    </div>
+  `).join("");
+
+  host.querySelectorAll(".item").forEach(row => {
+    const id = row.getAttribute("data-id");
+    const item = items.find(i => i.id === id);
+    row.querySelector(".iqty").addEventListener("change", e => {
+      item.qty = Math.max(1, parseInt(e.target.value, 10) || 1);
+      e.target.value = item.qty;
+      updatePreview();
+      persistDraft();
+    });
+    row.querySelectorAll("input[type=radio]").forEach(r => {
+      r.addEventListener("change", () => {
+        item.status = r.value;
+        updatePreview();
+        persistDraft();
+      });
+    });
+    row.querySelector(".iremove").addEventListener("click", () => removeItem(sectionId, id));
+  });
+  wireOrderButtons(host, sectionId);
+}
+
+function readMeta(){
+  return {
+    surgeon: $("surgeon").value.trim(),
+    facility: $("facility").value.trim(),
+    procedure: $("procedure").value.trim(),
+    cpt: $("cpt").value.trim(),
+    cardDate: $("cardDate").value,
+    notes: $("notes").value.trim()
+  };
+}
+
+function totalCounts(){
+  let open = 0, standby = 0, total = 0;
+  SECTIONS.forEach(sec => {
+    (state.items[sec.id] || []).forEach(i => {
+      total += 1;
+      if (sec.id === "position") return;
+      if (i.status === "standby") standby += 1;
+      else open += 1;
+    });
+  });
+  return { open, standby, total };
+}
+
+function updateSummary(){
+  const m = readMeta();
+  const c = totalCounts();
+  const title = m.surgeon
+    ? `${m.surgeon}${m.procedure ? " · " + m.procedure : ""}`
+    : (m.procedure || "Add surgeon and procedure details");
+  $("summaryTitle").textContent = title;
+  const pills = [];
+  if (m.cpt) pills.push(`CPT ${m.cpt}`);
+  if (m.cardDate) pills.push(m.cardDate);
+  pills.push(`${c.total} items`);
+  pills.push(`${c.open} open`);
+  pills.push(`${c.standby} standby`);
+  $("summaryPills").innerHTML = pills.map(p => `<span class="pill">${escapeHtml(p)}</span>`).join("");
+}
+
+function sectionTable(sec){
+  const items = state.items[sec.id] || [];
+  if (!items.length) {
+    return `<div class="pref-sec"><div class="pref-sec-h">${escapeHtml(sec.label)}</div><div class="pref-empty">None listed</div></div>`;
+  }
+  if (sec.id === "position") {
+    const rows = items.map(i => `<tr><td>${escapeHtml(i.name)}</td></tr>`).join("");
+    return `
+    <div class="pref-sec">
+      <div class="pref-sec-h">${escapeHtml(sec.label)}</div>
+      <table class="pref-table">
+        <tbody>${rows}</tbody>
+      </table>
+    </div>`;
+  }
+  const rows = items.map(i => `
+    <tr>
+      <td>${escapeHtml(i.name)}</td>
+      <td class="qty">${i.qty}</td>
+      <td class="stat ${i.status==="open"?"stat-open":"stat-standby"}">${i.status==="open"?"Open":"Standby"}</td>
+    </tr>
+  `).join("");
+  return `
+    <div class="pref-sec">
+      <div class="pref-sec-h">${escapeHtml(sec.label)}</div>
+      <table class="pref-table">
+        <thead>
+          <tr>
+            <th>Item</th>
+            <th class="qty">Qty</th>
+            <th class="stat">Status</th>
+          </tr>
+        </thead>
+        <tbody>${rows}</tbody>
+      </table>
+    </div>`;
+}
+
+function updatePreview(){
+  updateSummary();
+  const m = readMeta();
+  const procCpt = [m.procedure, m.cpt ? `(${m.cpt})` : ""].filter(Boolean).join(" ");
+  const dateLabel = m.cardDate || todayISO();
+  const sectionsHtml = SECTIONS.map(sectionTable).join("");
+  const notes = m.notes
+    ? `<div class="notes-box"><strong>Notes / special preferences</strong>${escapeHtml(m.notes).replace(/\n/g,"<br>")}</div>`
+    : "";
+
+  $("preview").innerHTML = `
+    <article class="pref-doc" id="prefDocument">
+      <div class="pref-page">
+        <div class="pref-brand">
+          <img src="Logo.jpg" alt="PeakPoint">
+        </div>
+        <h2 class="pref-title">Surgeon Preference Card</h2>
+
+        <div class="head-fields">
+          <div class="head-row"><span class="k">Surgeon: </span><span class="v">${m.surgeon ? escapeHtml(m.surgeon) : ""}</span></div>
+          <div class="head-row"><span class="k">Procedure (CPT Code): </span><span class="v">${escapeHtml(procCpt)}</span></div>
+          <div class="head-row"><span class="k">Version Date: </span><span class="v">${escapeHtml(dateLabel)}</span></div>
+        </div>
+
+        ${sectionsHtml}
+        ${notes}
+
+      </div>
+    </article>
+  `;
+}
+
+function snapshot(){
+  return {
+    version: 1,
+    savedAt: new Date().toISOString(),
+    meta: readMeta(),
+    items: JSON.parse(JSON.stringify(state.items))
+  };
+}
+
+function applySnapshot(data){
+  if (!data || !data.meta) return;
+  const m = data.meta;
+  $("surgeon").value = m.surgeon || "";
+  $("facility").value = m.facility || "PeakPoint Central Nassau Surgery Center";
+  $("procedure").value = m.procedure || "";
+  $("cpt").value = m.cpt || "";
+  $("cardDate").value = m.cardDate || todayISO();
+  $("notes").value = m.notes || "";
+  SECTIONS.forEach(sec => {
+    state.items[sec.id] = Array.isArray(data.items?.[sec.id]) ? data.items[sec.id] : [];
+    renderItemList(sec.id);
+  });
+  updatePreview();
+  persistDraft();
+}
+
+function persistDraft(){
+  try {
+    localStorage.setItem(DRAFT_KEY, JSON.stringify(snapshot()));
+  } catch (_) {}
+}
+
+function loadDraft(){
+  try {
+    const raw = localStorage.getItem(DRAFT_KEY);
+    if (!raw) return false;
+    applySnapshot(JSON.parse(raw));
+    return true;
+  } catch (_) {
+    return false;
+  }
+}
+
+function listSaved(){
+  try {
+    return JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+  } catch (_) {
+    return [];
+  }
+}
+
+function showStatus(msg){
+  const el = $("saveStatus");
+  el.hidden = false;
+  el.textContent = msg;
+}
+
+function formatWhen(iso){
+  if (!iso) return "";
+  try {
+    const d = new Date(iso);
+    if (Number.isNaN(d.getTime())) return "";
+    return d.toLocaleString();
+  } catch (_) {
+    return "";
+  }
+}
+
+function renderLibrary(){
+  const host = $("libraryList");
+  const cards = listSaved();
+  if (!cards.length) {
+    host.innerHTML = `<div class="empty-sec">No saved cards yet.</div>`;
+    return;
+  }
+  host.innerHTML = cards.map(c => `
+    <div class="library-item" data-id="${escapeHtml(c.id)}">
+      <div>
+        <div class="lab">${escapeHtml(c.label || "Untitled preference card")}</div>
+        <div class="when">${escapeHtml(formatWhen(c.savedAt))}</div>
+      </div>
+      <div class="library-actions">
+        <button class="mini" type="button" data-load="${escapeHtml(c.id)}">Open</button>
+        <button class="ghost" type="button" data-del="${escapeHtml(c.id)}">Delete</button>
+      </div>
+    </div>
+  `).join("");
+  host.querySelectorAll("[data-load]").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const card = listSaved().find(c => c.id === btn.getAttribute("data-load"));
+      if (!card) return;
+      applySnapshot(card);
+      showStatus(`Loaded “${card.label}”.`);
+    });
+  });
+  host.querySelectorAll("[data-del]").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const id = btn.getAttribute("data-del");
+      const next = listSaved().filter(c => c.id !== id);
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
+      renderLibrary();
+      showStatus("Deleted saved card.");
+    });
+  });
+}
+
+function saveCard(){
+  const data = snapshot();
+  if (!data.meta.surgeon && !data.meta.procedure) {
+    showStatus("Enter a surgeon name or procedure before saving.");
+    $("surgeon").focus();
+    return;
+  }
+  const label = [data.meta.surgeon, data.meta.procedure, data.meta.cpt].filter(Boolean).join(" · ")
+    || "Untitled preference card";
+  try {
+    const cards = listSaved();
+    cards.unshift({ id: uid(), label, ...data });
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(cards.slice(0, 40)));
+    $("library").hidden = false;
+    renderLibrary();
+    showStatus(`Saved “${label}”.`);
+  } catch (err) {
+    showStatus("Could not save this card in the browser.");
+  }
+}
+
+function toggleLibrary(){
+  const panel = $("library");
+  const opening = panel.hidden;
+  panel.hidden = !opening;
+  if (!panel.hidden) {
+    renderLibrary();
+    if (!listSaved().length) showStatus("No saved cards yet. Save a card first.");
+  }
+}
+
+function loadCardPrompt(){
+  toggleLibrary();
+}
+
+function clearCard(){
+  if (!confirm("Clear the current preference card?")) return;
+  SECTIONS.forEach(sec => { state.items[sec.id] = []; });
+  $("surgeon").value = "";
+  $("procedure").value = "";
+  $("cpt").value = "";
+  $("notes").value = "";
+  $("cardDate").value = todayISO();
+  $("facility").value = "PeakPoint Central Nassau Surgery Center";
+  SECTIONS.forEach(sec => renderItemList(sec.id));
+  updatePreview();
+  persistDraft();
+}
+
+function printCard(){
+  const m = readMeta();
+  if (!m.surgeon) {
+    alert("Enter the surgeon name before printing — it appears on the PDF.");
+    $("surgeon").focus();
+    return;
+  }
+  if (!m.procedure && !m.cpt) {
+    alert("Enter a procedure name and/or CPT code before printing.");
+    $("procedure").focus();
+    return;
+  }
+  window.print();
+}
+
+function wireMeta(){
+  ["surgeon","facility","procedure","cpt","cardDate","notes"].forEach(id => {
+    $(id).addEventListener("input", () => { updatePreview(); persistDraft(); });
+    $(id).addEventListener("change", () => { updatePreview(); persistDraft(); });
+  });
+  $("printBtn").addEventListener("click", printCard);
+  $("saveBtn").addEventListener("click", saveCard);
+  $("loadBtn").addEventListener("click", loadCardPrompt);
+  $("clearBtn").addEventListener("click", clearCard);
+}
+
+$("cardDate").value = todayISO();
+renderSections();
+wireMeta();
+if (!loadDraft()) updatePreview();
+</script>
+</body>
+</html>
