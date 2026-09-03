@@ -119,6 +119,10 @@ button.ghost{
   padding:13px 20px;font-size:14px;font-weight:600;cursor:pointer
 }
 button.ghost:hover{border-color:var(--slate-l)}
+.sr-only{
+  position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;
+  clip:rect(0,0,0,0);white-space:nowrap;border:0
+}
 button.mini{
   background:var(--green);color:#fff;border:none;border-radius:8px;padding:11px 14px;
   font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap
@@ -265,6 +269,9 @@ button.iconx:hover{border-color:#c45;color:#c45}
     <button class="go" id="printBtn" type="button">Print / Save PDF</button>
     <button class="ghost" id="saveBtn" type="button">Save card</button>
     <button class="ghost" id="loadBtn" type="button">Load saved…</button>
+    <button class="ghost" id="downloadBtn" type="button">Download all saved cards</button>
+    <button class="ghost" id="uploadBtn" type="button">Upload saved cards</button>
+    <input id="uploadFile" class="sr-only" type="file" accept=".json,application/json" tabindex="-1" aria-hidden="true">
     <button class="ghost" id="clearBtn" type="button">Clear card</button>
   </div>
   <p class="status-msg no-print" id="saveStatus" hidden></p>
@@ -889,6 +896,99 @@ function loadCardPrompt(){
   toggleLibrary();
 }
 
+function libraryExportPayload(){
+  return {
+    type: "pp-pref-cards-library",
+    version: 1,
+    exportedAt: new Date().toISOString(),
+    cards: listSaved()
+  };
+}
+
+function normalizeImportedCards(data){
+  let cards = [];
+  if (Array.isArray(data)) cards = data;
+  else if (data && Array.isArray(data.cards)) cards = data.cards;
+  else if (data && data.meta && data.items) cards = [data];
+  else return null;
+
+  return cards
+    .filter(c => c && typeof c === "object" && c.meta && c.items)
+    .map(c => ({
+      id: c.id || uid(),
+      label: c.label
+        || [c.meta.surgeon, c.meta.procedure, c.meta.cpt].filter(Boolean).join(" · ")
+        || "Untitled preference card",
+      version: c.version || 1,
+      savedAt: c.savedAt || new Date().toISOString(),
+      meta: c.meta,
+      items: c.items
+    }));
+}
+
+function downloadAllSavedCards(){
+  const cards = listSaved();
+  if (!cards.length) {
+    showStatus("No saved cards to download. Save a card first.");
+    return;
+  }
+  const blob = new Blob([JSON.stringify(libraryExportPayload(), null, 2)], { type: "application/json" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  const day = todayISO();
+  a.href = url;
+  a.download = `peakpoint-preference-cards-${day}.json`;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
+  showStatus(`Downloaded ${cards.length} saved card(s).`);
+}
+
+function mergeImportedCards(imported){
+  const existing = listSaved();
+  const byId = new Map(existing.map(c => [c.id, c]));
+  let added = 0;
+  let updated = 0;
+  imported.forEach(card => {
+    if (byId.has(card.id)) {
+      byId.set(card.id, card);
+      updated += 1;
+    } else {
+      byId.set(card.id, card);
+      added += 1;
+    }
+  });
+  const merged = Array.from(byId.values())
+    .sort((a, b) => String(b.savedAt || "").localeCompare(String(a.savedAt || "")))
+    .slice(0, 80);
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(merged));
+  return { added, updated, total: merged.length };
+}
+
+function uploadSavedCards(file){
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = () => {
+    try {
+      const parsed = JSON.parse(String(reader.result || ""));
+      const imported = normalizeImportedCards(parsed);
+      if (!imported || !imported.length) {
+        showStatus("That file does not contain preference cards.");
+        return;
+      }
+      const result = mergeImportedCards(imported);
+      $("library").hidden = false;
+      renderLibrary();
+      showStatus(`Uploaded ${imported.length} card(s): ${result.added} new, ${result.updated} updated (${result.total} total saved).`);
+    } catch (_) {
+      showStatus("Could not read that JSON file.");
+    }
+  };
+  reader.onerror = () => showStatus("Could not read that file.");
+  reader.readAsText(file);
+}
+
 function clearCard(){
   if (!confirm("Clear the current preference card?")) return;
   SECTIONS.forEach(sec => { state.items[sec.id] = []; });
@@ -926,6 +1026,13 @@ function wireMeta(){
   $("printBtn").addEventListener("click", printCard);
   $("saveBtn").addEventListener("click", saveCard);
   $("loadBtn").addEventListener("click", loadCardPrompt);
+  $("downloadBtn").addEventListener("click", downloadAllSavedCards);
+  $("uploadBtn").addEventListener("click", () => $("uploadFile").click());
+  $("uploadFile").addEventListener("change", e => {
+    const file = e.target.files && e.target.files[0];
+    uploadSavedCards(file);
+    e.target.value = "";
+  });
   $("clearBtn").addEventListener("click", clearCard);
 }
 
